@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ounce: Daily Hydration Log — Mike Murphy Apps</title>
+  <meta
+    name="description"
+    content="A private, no-subscription Apple Watch hydration tracker. Log drinks, track your daily goal, and stay hydrated right from your wrist."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: rgba(255,255,255,0.06);
+      --surface-border: rgba(255,255,255,0.1);
+      --primary: #6ea8fe;
+      --primary-strong: #4c8dff;
+      --text: #f5f7ff;
+      --muted: #b4bdd3;
+      --success: #7ee787;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 24px;
+      --max-width: 1200px;
+      --water: #1565c0;
+      --water-light: #64b5f6;
+      --water-glow: rgba(100,181,246,0.25);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21,101,192,0.28), transparent 38%),
+        radial-gradient(circle at bottom right, rgba(110,168,254,0.14), transparent 35%),
+        linear-gradient(180deg, #0b1020 0%, #10182e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #9b7bff);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 10px 25px rgba(76,141,255,0.35);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover { color: white; }
+
+    .back-arrow {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(100,181,246,0.1);
+      border: 1px solid rgba(100,181,246,0.2);
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: var(--water-light);
+      font-size: 0.92rem;
+      margin-bottom: 26px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--water-light);
+      box-shadow: 0 0 12px var(--water-light);
+    }
+
+    .coming-soon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(110,168,254,0.12);
+      border: 1px solid rgba(110,168,254,0.25);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+    }
+
+    .app-subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--water-light);
+      font-weight: 500;
+      margin-bottom: 22px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 0.97rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--water-light), var(--water));
+      color: white;
+      box-shadow: 0 12px 28px rgba(21,101,192,0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .btn-disabled {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted);
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ── Watch Mockup ── */
+    .watch-scene {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .watch-glow {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(21,101,192,0.3), transparent 70%);
+      pointer-events: none;
+    }
+
+    .watch-shell {
+      position: relative;
+      width: 200px;
+    }
+
+    .watch-band-top {
+      width: 76px;
+      height: 48px;
+      background: linear-gradient(180deg, #1a1a2e, #2a2a4a);
+      border-radius: 10px 10px 0 0;
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-bottom: none;
+    }
+
+    .watch-body {
+      width: 160px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #1e1e3a, #141428);
+      border-radius: 46px;
+      padding: 14px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.5),
+        0 20px 50px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .watch-crown {
+      position: absolute;
+      right: -10px;
+      top: 50px;
+      width: 8px;
+      height: 28px;
+      background: linear-gradient(180deg, #2a2a4a, #1a1a2e);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .watch-screen {
+      background: #000;
+      border-radius: 34px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1.12;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 14px 14px;
+      position: relative;
+    }
+
+    .watch-screen-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #0a1628 0%, #0d1f3d 100%);
+    }
+
+    .watch-time {
+      position: relative;
+      text-align: center;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .watch-ring-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .watch-ring-svg {
+      width: 88px;
+      height: 88px;
+    }
+
+    .watch-oz-label {
+      position: absolute;
+      text-align: center;
+    }
+
+    .watch-oz-label .oz-value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .watch-oz-label .oz-unit {
+      font-size: 0.48rem;
+      color: var(--water-light);
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .watch-goal-text {
+      position: relative;
+      text-align: center;
+      font-size: 0.44rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .watch-log-btn {
+      position: relative;
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      border-radius: 14px;
+      padding: 7px 0;
+      text-align: center;
+      font-size: 0.5rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.04em;
+    }
+
+    .watch-band-bottom {
+      width: 76px;
+      height: 48px;
+      background: linear-gradient(180deg, #2a2a4a, #1a1a2e);
+      border-radius: 0 0 10px 10px;
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: none;
+    }
+
+    /* Second watch — complication view */
+    .watch-shell-small {
+      position: absolute;
+      bottom: -30px;
+      right: -40px;
+      width: 130px;
+      opacity: 0.85;
+    }
+
+    .watch-body-small {
+      width: 108px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #1e1e3a, #141428);
+      border-radius: 32px;
+      padding: 10px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+
+    .watch-screen-small {
+      background: #000;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1.12;
+      background: linear-gradient(180deg, #0a1628, #0d1f3d);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 8px;
+      gap: 4px;
+    }
+
+    .comp-ring {
+      width: 44px;
+      height: 44px;
+    }
+
+    .comp-label {
+      font-size: 0.38rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    /* ── Privacy Strip ── */
+    .privacy-strip {
+      margin-top: 52px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .privacy-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .privacy-pill .pill-icon {
+      font-size: 1rem;
+    }
+
+    /* ── Features ── */
+    .features-section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .section-title h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      border-radius: 22px;
+      padding: 28px;
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(100,181,246,0.3);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      background: rgba(21,101,192,0.2);
+      border: 1px solid rgba(100,181,246,0.2);
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.65;
+    }
+
+    /* ── Drink types ── */
+    .drinks-section {
+      padding: 20px 0 80px;
+    }
+
+    .drinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .drink-card {
+      border-radius: 18px;
+      padding: 22px 16px;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .drink-card:hover { transform: translateY(-3px); }
+
+    .drink-emoji { font-size: 2rem; margin-bottom: 10px; }
+
+    .drink-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .drink-coeff {
+      font-size: 0.78rem;
+      color: var(--water-light);
+    }
+
+    /* ── Privacy section ── */
+    .privacy-section {
+      padding: 20px 0 80px;
+    }
+
+    .privacy-block {
+      border-radius: 28px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .privacy-block h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .privacy-block p {
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: 0.97rem;
+    }
+
+    .privacy-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .privacy-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+
+    .check {
+      color: var(--water-light);
+      font-size: 1rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .privacy-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .priv-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+
+    .priv-icon { font-size: 1.3rem; }
+
+    .priv-row-text h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .priv-row-text p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 50px 0 70px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.2s ease;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .social-link:hover { background: rgba(255,255,255,0.1); }
+
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 60px; }
+      .watch-scene { order: -1; }
+      .privacy-block { grid-template-columns: 1fr; gap: 32px; padding: 32px; }
+      .watch-shell-small { display: none; }
+    }
+
+    @media (max-width: 500px) {
+      .privacy-strip { gap: 10px; }
+      .drinks-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <span>Mike Murphy Apps</span>
+      </div>
+      <a href="./index.html" class="back-link">
+        <span class="back-arrow">←</span> All Apps
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div>
+          <div class="eyebrow">
+            <span class="dot"></span>
+            Apple Watch · watchOS · HealthKit
+          </div>
+
+          <div class="coming-soon-badge">● Coming Soon</div>
+
+          <h1>Ounce</h1>
+          <p class="app-subtitle">Daily Hydration Log</p>
+
+          <p class="hero-desc">
+            Track your daily water and drink intake right from your wrist. No iPhone required,
+            no subscription, no account — just clean, private hydration tracking built for Apple Watch.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#" class="btn btn-primary btn-disabled">
+              ⌚ Coming to App Store
+            </a>
+            <a href="#features" class="btn btn-secondary">
+              See Features
+            </a>
+          </div>
+
+          <div class="privacy-strip">
+            <span class="privacy-pill"><span class="pill-icon">🔒</span> No account required</span>
+            <span class="privacy-pill"><span class="pill-icon">📵</span> No subscription</span>
+            <span class="privacy-pill"><span class="pill-icon">📱</span> Watch-first</span>
+            <span class="privacy-pill"><span class="pill-icon">❤️</span> Apple Health sync</span>
+          </div>
+        </div>
+
+        <!-- Watch Mockup -->
+        <div class="watch-scene">
+          <div class="watch-glow"></div>
+
+          <div class="watch-shell">
+            <div class="watch-band-top"></div>
+
+            <div class="watch-body">
+              <div class="watch-crown"></div>
+
+              <div class="watch-screen">
+                <div class="watch-screen-bg"></div>
+
+                <div class="watch-time">9:41 AM</div>
+
+                <div class="watch-ring-wrap">
+                  <svg class="watch-ring-svg" viewBox="0 0 88 88">
+                    <!-- Background ring -->
+                    <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7"/>
+                    <!-- Progress ring ~68% -->
+                    <circle cx="44" cy="44" r="36" fill="none"
+                      stroke="url(#ringGrad)" stroke-width="7"
+                      stroke-linecap="round"
+                      stroke-dasharray="226.2"
+                      stroke-dashoffset="72"
+                      transform="rotate(-90 44 44)"/>
+                    <defs>
+                      <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#64b5f6"/>
+                        <stop offset="100%" stop-color="#1565c0"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+
+                  <div class="watch-oz-label">
+                    <div class="oz-value">54</div>
+                    <div class="oz-unit">OZ TODAY</div>
+                  </div>
+                </div>
+
+                <div class="watch-goal-text">GOAL: 80 OZ · 68%</div>
+                <div class="watch-log-btn">+ LOG A DRINK</div>
+              </div>
+            </div>
+
+            <div class="watch-band-bottom"></div>
+
+            <!-- Second watch showing complication -->
+            <div class="watch-shell-small">
+              <div class="watch-body-small">
+                <div class="watch-screen-small">
+                  <svg class="comp-ring" viewBox="0 0 44 44">
+                    <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+                    <circle cx="22" cy="22" r="18" fill="none"
+                      stroke="#64b5f6" stroke-width="4"
+                      stroke-linecap="round"
+                      stroke-dasharray="113.1"
+                      stroke-dashoffset="36"
+                      transform="rotate(-90 22 22)"/>
+                    <text x="22" y="26" text-anchor="middle" fill="white" font-size="9" font-weight="800" font-family="Inter, sans-serif">68%</text>
+                  </svg>
+                  <div class="comp-label">OUNCE</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Features ── -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Everything you need. Nothing you don't.</h2>
+          <p>Built Watch-first, Ounce keeps your daily hydration goal front and centre — right on your wrist.</p>
+        </div>
+
+        <div class="features-grid">
+
+          <div class="feature-card glass">
+            <div class="feature-icon">⌚</div>
+            <h3>Watch-first logging</h3>
+            <p>Log a drink in one tap directly from your Apple Watch. No need to reach for your phone. Ounce lives where you need it most.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="feature-icon">🔵</div>
+            <h3>Always-on complication</h3>
+            <p>Add Ounce to any watch face. Your daily progress ring stays visible at a glance, so you always know where you stand.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="feature-icon">🔔</div>
+            <h3>Smart wrist reminders</h3>
+            <p>Set a reminder interval and active hours so Ounce nudges you during the day — and never during the night.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="feature-icon">💧</div>
+            <h3>Hydration coefficients</h3>
+            <p>Coffee, tea, and juice count — but not equally. Ounce adjusts each drink's contribution so your total reflects true hydration.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="feature-icon">📈</div>
+            <h3>Daily history & streaks</h3>
+            <p>Review your intake day by day and build a streak. Consistency is what makes hydration a habit, not a chore.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="feature-icon">❤️</div>
+            <h3>Apple Health sync</h3>
+            <p>Every drink you log is written to Apple Health automatically. One permission, clearly explained, and your data stays in your ecosystem.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Drink types ── -->
+    <section class="drinks-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Track what you actually drink</h2>
+          <p>Ounce counts every beverage toward your daily goal — with smart hydration adjustments built in.</p>
+        </div>
+
+        <div class="drinks-grid">
+          <div class="drink-card glass">
+            <div class="drink-emoji">💧</div>
+            <div class="drink-name">Water</div>
+            <div class="drink-coeff">100% hydration</div>
+          </div>
+          <div class="drink-card glass">
+            <div class="drink-emoji">☕</div>
+            <div class="drink-name">Coffee</div>
+            <div class="drink-coeff">~80% hydration</div>
+          </div>
+          <div class="drink-card glass">
+            <div class="drink-emoji">🍵</div>
+            <div class="drink-name">Tea</div>
+            <div class="drink-coeff">~90% hydration</div>
+          </div>
+          <div class="drink-card glass">
+            <div class="drink-emoji">🧃</div>
+            <div class="drink-name">Juice</div>
+            <div class="drink-coeff">~85% hydration</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Privacy ── -->
+    <section class="privacy-section">
+      <div class="container">
+        <div class="privacy-block glass">
+          <div>
+            <h2>Private by design. Not by policy.</h2>
+            <p>Your hydration data is yours. Ounce never sends it anywhere — not to a server, not to an ad network, not to us.</p>
+
+            <ul class="privacy-list">
+              <li><span class="check">✓</span> All data stored on your Apple Watch</li>
+              <li><span class="check">✓</span> No account, no sign-in, no email</li>
+              <li><span class="check">✓</span> No subscription or hidden paywalls</li>
+              <li><span class="check">✓</span> Apple Health integration is opt-in</li>
+              <li><span class="check">✓</span> Zero data collected by Mike Murphy Apps</li>
+            </ul>
+          </div>
+
+          <div class="privacy-visual">
+            <div class="priv-row">
+              <span class="priv-icon">📵</span>
+              <div class="priv-row-text">
+                <h4>No network calls</h4>
+                <p>Ounce never contacts a server. Period.</p>
+              </div>
+            </div>
+            <div class="priv-row">
+              <span class="priv-icon">🔒</span>
+              <div class="priv-row-text">
+                <h4>On-device storage</h4>
+                <p>SwiftData keeps everything local to your Watch.</p>
+              </div>
+            </div>
+            <div class="priv-row">
+              <span class="priv-icon">❤️</span>
+              <div class="priv-row-text">
+                <h4>Apple Health (optional)</h4>
+                <p>Sync water intake to Health if you choose to.</p>
+              </div>
+            </div>
+            <div class="priv-row">
+              <span class="priv-icon">💸</span>
+              <div class="priv-row-text">
+                <h4>One-time purchase</h4>
+                <p>Pay once. Own it forever. No renewal reminders.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="contact">
+    <div class="container">
+      <p class="footer-brand">Mike Murphy Apps</p>
+      <p>© 2026 Mike Murphy Apps • Built with HTML, CSS, and SwiftUI-inspired design.</p>
+      <div class="socials">
+        <a class="social-link" href="./index.html">← All Apps</a>
+        <a class="social-link" href="./privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
