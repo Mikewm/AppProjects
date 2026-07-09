@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBMI — Mental & Physical Wellness Tracker</title>
+  <style>
+    :root {
+      --indigo: #5B6EE8;
+      --indigo-light: #8B9AF0;
+      --cyan: #38bdf8;
+      --navy-deep: #060a17;
+      --navy: #0b1224;
+      --navy-panel: #10182e;
+      --light: #f8fafc;
+      --muted: #93a0c2;
+      --gradient: linear-gradient(135deg, #0b1224 0%, #141d3a 45%, #1c2650 100%);
+      --accent-gradient: linear-gradient(135deg, #5B6EE8 0%, #4c5fd6 50%, #38bdf8 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--navy-deep);
+      color: var(--light);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; }
+
+    /* ========================= NAVIGATION ========================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(6, 10, 23, 0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-gradient);
+      font-size: 22px;
+      box-shadow: 0 10px 25px rgba(91,110,232,0.35);
+    }
+
+    .nav-links { display: flex; gap: 24px; }
+
+    .nav-links a {
+      color: white;
+      opacity: 0.85;
+      transition: 0.2s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ========================= HERO ========================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 160px 20px 120px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(91,110,232,0.18), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(56,189,248,0.14), transparent 28%),
+        var(--gradient);
+      color: white;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1000px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      background: rgba(91,110,232,0.14);
+      border: 1px solid rgba(91,110,232,0.28);
+      margin-bottom: 28px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.95;
+      margin-bottom: 26px;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #ffffff, #b8c2f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      max-width: 760px;
+      margin: auto auto 40px;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 50px;
+    }
+
+    .primary-btn, .secondary-btn {
+      padding: 18px 34px;
+      border-radius: 9999px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .primary-btn {
+      background: var(--accent-gradient);
+      color: white;
+      box-shadow: 0 15px 40px rgba(91,110,232,0.35);
+    }
+
+    .primary-btn:hover { transform: translateY(-4px) scale(1.02); }
+
+    .secondary-btn {
+      color: white;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .secondary-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* ========================= PHONE MOCKUPS ========================== */
+    .mockup-wrapper {
+      position: relative;
+      z-index: 20;
+      margin-top: -100px;
+      padding: 0 20px;
+    }
+
+    .mockups {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 36px;
+    }
+
+    .mockup-card {
+      position: relative;
+      background: var(--navy-panel);
+      border-radius: 40px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+      transition: 0.3s ease;
+    }
+
+    .mockup-card:hover { transform: translateY(-10px); }
+
+    .mockup { width: 260px; display: block; }
+
+    .floating-label {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: rgba(6,10,23,0.78);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ========================= TRUST SECTION ========================== */
+    .trust {
+      background: var(--navy);
+      padding: 90px 20px 60px;
+      text-align: center;
+    }
+
+    .trust-title {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .trust-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .trust-item {
+      background: var(--navy-panel);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-weight: 600;
+      color: #cbd5f5;
+    }
+
+    /* ========================= FEATURES ========================== */
+    .features {
+      padding: 120px 20px;
+      background: var(--navy);
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin: auto auto 70px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      margin-bottom: 20px;
+      line-height: 1.1;
+      color: white;
+    }
+
+    .section-heading p {
+      font-size: 1.15rem;
+      color: var(--muted);
+    }
+
+    .feature-grid {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: var(--navy-panel);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(91,110,232,0.35);
+      box-shadow: 0 24px 60px rgba(91,110,232,0.18);
+    }
+
+    .feature-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(91,110,232,0.22), rgba(56,189,248,0.18));
+      font-size: 28px;
+    }
+
+    .feature-card h3 { font-size: 1.35rem; margin-bottom: 14px; color: white; }
+    .feature-card p { color: var(--muted); }
+
+    /* ========================= SHOWCASE ========================== */
+    .showcase {
+      background: var(--navy-deep);
+      color: white;
+      padding: 120px 20px;
+    }
+
+    .showcase-grid {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      align-items: center;
+    }
+
+    .showcase-text h2 {
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .showcase-text p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .bullet-list { display: grid; gap: 16px; }
+
+    .bullet {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      color: #cbd5f5;
+    }
+
+    .bullet span {
+      color: var(--indigo-light);
+      font-weight: 700;
+    }
+
+    .glass-panel {
+      background: rgba(91,110,232,0.06);
+      border: 1px solid rgba(91,110,232,0.18);
+      border-radius: 32px;
+      padding: 30px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .glass-panel img {
+      width: 100%;
+      display: block;
+      border-radius: 24px;
+    }
+
+    /* ========================= FINAL CTA ========================== */
+    .final-cta {
+      position: relative;
+      overflow: hidden;
+      background: var(--accent-gradient);
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+    }
+
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.12), transparent 45%);
+    }
+
+    .final-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+
+    .final-cta p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 40px;
+    }
+
+    .final-cta .primary-btn {
+      background: white;
+      color: var(--indigo);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    /* ========================= FOOTER ========================== */
+    footer {
+      background: #020510;
+      color: rgba(255,255,255,0.62);
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    footer p {
+      max-width: 760px;
+      margin: auto;
+      line-height: 1.8;
+    }
+
+    .footer-disclaimer {
+      margin-top: 20px;
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.42);
+    }
+
+    .socials { margin-top: 20px; }
+
+    .social-link {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .social-link:hover { color: rgba(255,255,255,0.8); }
+
+    /* ========================= RESPONSIVE ========================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mockup { width: 100%; max-width: 280px; }
+      .hero { padding-top: 140px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .primary-btn, .secondary-btn { width: 100%; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-logo">✦</div>
+        MoodBMI
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#download">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">✨ Private Mental & Physical Wellness Tracking</div>
+      <h1>
+        Understand your<br>
+        <span class="gradient-text">mind and body, together.</span>
+      </h1>
+      <p class="tagline">
+        MoodBMI combines clinically-informed PHQ-9 and GAD-7 assessments with
+        a simple BMI tracker — all stored privately on your device with Apple's SwiftData.
+      </p>
+      <div class="hero-buttons">
+        <a href="#download" class="primary-btn">Download on the App Store</a>
+        <a href="#features" class="secondary-btn">Explore Features</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHONE MOCKUPS -->
+  <section class="mockup-wrapper">
+    <div class="mockups">
+      <div class="mockup-card">
+        <div class="floating-label">Welcome</div>
+        <img src="MoodBMIWelcome.png" alt="MoodBMI Welcome Screen" class="mockup" />
+      </div>
+      <div class="mockup-card">
+        <div class="floating-label">Dashboard</div>
+        <img src="MoodBMIDashboard.png" alt="MoodBMI Dashboard" class="mockup" />
+      </div>
+      <div class="mockup-card">
+        <div class="floating-label">BMI Calculator</div>
+        <img src="MoodBMIBmiCalc.png" alt="MoodBMI BMI Calculator" class="mockup" />
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust">
+    <div class="trust-title">Built on trusted clinical frameworks</div>
+    <div class="trust-grid">
+      <div class="trust-item">PHQ-9 Depression Screening</div>
+      <div class="trust-item">GAD-7 Anxiety Screening</div>
+      <div class="trust-item">On-Device Privacy</div>
+      <div class="trust-item">SwiftUI Native</div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-heading">
+      <h2>Three assessments. One clear picture of your wellbeing.</h2>
+      <p>MoodBMI turns brief daily check-ins into meaningful insight across your mental and physical health.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>PHQ-9 Personal Health Tracker</h3>
+        <p>A widely-used 9-question screening tool to help you reflect on mood and depressive symptoms over time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💓</div>
+        <h3>GAD-7 Stress Assessment</h3>
+        <p>Track anxiety and stress patterns with a standardized 7-question assessment, visualized clearly over time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧍</div>
+        <h3>BMI Body Tracker</h3>
+        <p>Log height and weight in Imperial or Metric units and track your Body Mass Index trend alongside your mental health.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Trends Across All Three</h3>
+        <p>See how mood, anxiety, and physical health move together over weeks and months with clean, elegant charts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Private by Design</h3>
+        <p>Every entry stays on your device with SwiftData — nothing is uploaded, sold, or shared.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section class="showcase">
+    <div class="showcase-grid">
+      <div class="showcase-text">
+        <h2>A calm, focused space to check in with yourself.</h2>
+        <p>
+          MoodBMI blends validated mental health screening tools with straightforward
+          physical health tracking — all in one native SwiftUI app.
+        </p>
+        <div class="bullet-list">
+          <div class="bullet">
+            <span>✓</span>
+            <div>Quick, guided PHQ-9 and GAD-7 questionnaires</div>
+          </div>
+          <div class="bullet">
+            <span>✓</span>
+            <div>Imperial and Metric BMI calculator</div>
+          </div>
+          <div class="bullet">
+            <span>✓</span>
+            <div>History and Trends views for every assessment</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-panel">
+        <img src="MoodBMIGAD7.png" alt="MoodBMI GAD-7 Assessment" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" id="download">
+    <div class="final-inner">
+      <h2>Start understanding your whole self today.</h2>
+      <p>
+        Track mood, anxiety, and BMI privately — and see the patterns
+        that matter with MoodBMI.
+      </p>
+      <a href="#" class="primary-btn">Get MoodBMI</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 MoodBMI — Built with SwiftUI and privacy-focused wellness tracking.</p>
+    <p class="footer-disclaimer">
+      MoodBMI is intended for informational and educational purposes only.
+      It is not a medical device and does not provide medical advice, diagnosis, or treatment.
+    </p>
+    <div class="socials">
+      <a class="social-link" href="./privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</body>
+</html>
