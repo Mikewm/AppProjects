@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Mike Murphy Apps</title>
+  <meta
+    name="description"
+    content="Privacy Policy for Mike Murphy Apps: MoodBMI, Mood Pulse, Aura, Graveyard, and Ounce."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: rgba(255,255,255,0.06);
+      --surface-border: rgba(255,255,255,0.1);
+      --primary: #6ea8fe;
+      --primary-strong: #4c8dff;
+      --text: #f5f7ff;
+      --muted: #b4bdd3;
+      --success: #7ee787;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 24px;
+      --max-width: 900px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(110,168,254,0.22), transparent 35%),
+        radial-gradient(circle at top right, rgba(126,231,135,0.16), transparent 30%),
+        linear-gradient(180deg, #0b1020 0%, #10182e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #9b7bff);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 10px 25px rgba(76,141,255,0.35);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover { color: white; text-decoration: none; }
+
+    /* ── Page content ── */
+    .policy-wrap {
+      padding: 70px 0 90px;
+    }
+
+    .policy-card {
+      border-radius: 28px;
+      padding: clamp(28px, 5vw, 56px);
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+      margin-top: 42px;
+      margin-bottom: 14px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    p, li {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    p { margin-bottom: 14px; }
+
+    ul {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+
+    li { margin-bottom: 6px; }
+
+    em { color: var(--text); font-style: italic; }
+
+    .app-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin: 4px 6px 4px 0;
+    }
+
+    .app-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-blue   { background: #64b5f6; box-shadow: 0 0 8px #64b5f6; }
+    .dot-purple { background: #b39ddb; box-shadow: 0 0 8px #b39ddb; }
+    .dot-pink   { background: #f48fb1; box-shadow: 0 0 8px #f48fb1; }
+    .dot-green  { background: #7ee787; box-shadow: 0 0 8px #7ee787; }
+
+    .email-box {
+      display: inline-block;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 50px 0 70px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.2s ease;
+      display: inline-block;
+      color: var(--text);
+    }
+
+    .social-link:hover { background: rgba(255,255,255,0.1); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .policy-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <span>Mike Murphy Apps</span>
+      </div>
+      <a href="./index.html" class="back-link">
+        <span>←</span> All Apps
+      </a>
+    </div>
+  </header>
+
+  <main class="policy-wrap">
+    <div class="container">
+      <div class="policy-card glass">
+
+        <h1>Privacy Policy</h1>
+        <p class="updated">Last Updated: August 1, 2026</p>
+
+        <p>
+          This Privacy Policy covers all apps published by Mike Murphy Apps, including:
+        </p>
+
+        <p>
+          <span class="app-pill"><span class="dot dot-blue"></span> MoodBMI</span>
+          <span class="app-pill"><span class="dot dot-purple"></span> Mood Pulse: Daily Wellness Log</span>
+          <span class="app-pill"><span class="dot dot-pink"></span> Aura: Migraine &amp; Pain Log</span>
+          <span class="app-pill"><span class="dot dot-green"></span> Graveyard: Night Shift Habits</span>
+          <span class="app-pill"><span class="dot dot-blue"></span> Ounce: Daily Hydration Log</span>
+        </p>
+
+        <p>
+          Your privacy is important to us. This Privacy Policy explains how information
+          may be collected, used, and protected when using these apps (collectively, “the Apps”).
+        </p>
+
+        <p>
+          By using the Apps, you agree to the practices described in this policy.
+        </p>
+
+        <h2>1. Information We Collect</h2>
+
+        <p>The Apps are designed to minimize data collection. Depending on which app and features are used, the Apps may store:</p>
+
+        <ul>
+          <li>Mood and wellness tracking entries</li>
+          <li>PHQ-9 assessment responses</li>
+          <li>GAD-7 assessment responses</li>
+          <li>Migraine and pain log entries, including physician contact details you choose to enter</li>
+          <li>Suggestions for health and wellbeing</li>
+          <li>Hydration and beverage log entries, including drink type and volume</li>
+          <li>Optional HealthKit-related wellness data</li>
+        </ul>
+
+        <p>The Apps do not intentionally collect personally identifying information, and none of the Apps require an account or sign-in.</p>
+
+        <h2>2. Health and Wellness Disclaimer</h2>
+
+        <p>These apps are informational wellness tools only. The Apps:</p>
+
+        <ul>
+          <li>Do not provide medical diagnoses</li>
+          <li>Do not replace professional healthcare advice</li>
+          <li>Are not intended for emergency use</li>
+          <li>Should not be relied upon as medical treatment</li>
+        </ul>
+
+        <p>If you are experiencing a medical or mental health emergency, contact a qualified healthcare professional or emergency services immediately.</p>
+
+        <h2>3. Apple HealthKit</h2>
+
+        <p>If enabled by the user, the Apps may access Apple HealthKit data. For example, Ounce can write logged drink volume to HealthKit's Dietary Water data type, and other apps may read or write related wellness data.</p>
+
+        <p>HealthKit data:</p>
+
+        <ul>
+          <li>Is accessed only with user permission, granted through Apple's standard authorization prompt</li>
+          <li>Is used solely for app functionality</li>
+          <li>Is not sold to third parties</li>
+          <li>Is not used for advertising purposes</li>
+        </ul>
+
+        <p>Users may revoke HealthKit permissions at any time in the Health app's Sources settings.</p>
+
+        <h2>4. Data Storage</h2>
+
+        <p>Data is stored only locally on the user's device — on iPhone, iPad, or Apple Watch as applicable — and within Apple-provided systems such as iCloud, if enabled by the user. None of the Apps send data to servers operated by Mike Murphy Apps, because no such servers exist.</p>
+
+        <p>Ounce specifically makes no network calls of any kind. All hydration data is stored using SwiftData directly on the Apple Watch.</p>
+
+        <p>Reasonable safeguards are used to help protect user information.</p>
+
+        <h2>5. Platform and Third-Party Services</h2>
+
+        <p>The Apps rely on certain Apple platform services that may be required for application functionality:</p>
+
+        <ul>
+          <li>Apple App Store</li>
+          <li>Apple HealthKit (if enabled by the user)</li>
+          <li>Apple iCloud (if enabled by the user)</li>
+        </ul>
+
+        <p>The Apps do not sell user data and do not use advertising networks or third-party marketing trackers.</p>
+
+        <h2>6. Data Sharing</h2>
+
+        <p>We do not sell personal information. Limited information may only be shared:</p>
+
+        <ul>
+          <li>When required by law</li>
+          <li>To comply with legal obligations</li>
+          <li>To protect platform security and integrity</li>
+        </ul>
+
+        <h2>7. Children's Privacy</h2>
+
+        <p>The Apps are not intended for children under 13 years of age. We do not knowingly collect information from children.</p>
+
+        <h2>8. User Controls</h2>
+
+        <p>Users may:</p>
+
+        <ul>
+          <li>Delete app data at any time</li>
+          <li>Remove the Apps from their device</li>
+          <li>Revoke HealthKit permissions</li>
+          <li>Disable notifications</li>
+        </ul>
+
+        <h2>9. Changes to This Policy</h2>
+
+        <p>This Privacy Policy may be updated periodically. Continued use of the Apps after updates constitutes acceptance of the revised policy.</p>
+
+        <h2>10. Clinical Screening Assessments and Attribution</h2>
+
+        <p>Some apps include screening questionnaires that are widely used in clinical and research settings for educational, self-monitoring, and wellness purposes.</p>
+
+        <h3>PHQ-9 (Patient Health Questionnaire-9)</h3>
+
+        <p>The PHQ-9 was developed by Kroenke K, Spitzer RL, and Williams JBW.</p>
+
+        <p>
+          Reference: Kroenke K, Spitzer RL, Williams JBW.
+          <em>The PHQ-9: Validity of a Brief Depression Severity Measure.</em>
+          Journal of General Internal Medicine. 2001;16(9):606–613.
+        </p>
+
+        <p>The PHQ-9 is used in this application for educational, self-monitoring, and wellness purposes only.</p>
+
+        <h3>GAD-7 (Generalized Anxiety Disorder-7)</h3>
+
+        <p>The GAD-7 was developed by Spitzer RL, Kroenke K, Williams JBW, and Löwe B.</p>
+
+        <p>
+          Reference: Spitzer RL, Kroenke K, Williams JBW, Löwe B.
+          <em>A Brief Measure for Assessing Generalized Anxiety Disorder: The GAD-7.</em>
+          Archives of Internal Medicine. 2006;166(10):1092–1097.
+        </p>
+
+        <p>The GAD-7 is used in this application for educational, self-monitoring, and wellness purposes only.</p>
+
+        <h2>11. Medical Disclaimer</h2>
+
+        <p>These apps are intended for informational, educational, and wellness purposes only.</p>
+
+        <p>The assessments, scores, trends, insights, and recommendations provided by these applications are not medical advice and are not intended to diagnose, treat, cure, or prevent any disease or medical condition.</p>
+
+        <p>Users should consult a qualified healthcare professional regarding any questions about their mental or physical health.</p>
+
+        <p>If you are experiencing a medical emergency or mental health crisis, contact emergency services or a qualified healthcare provider immediately.</p>
+
+        <h2>12. Copyright and Intellectual Property Notice</h2>
+
+        <p>All trademarks, service marks, and copyrighted materials remain the property of their respective owners.</p>
+
+        <p>The inclusion of PHQ-9 and GAD-7 assessments does not imply endorsement by the original authors or publishers.</p>
+
+        <h2>13. Contact</h2>
+
+        <p>For questions regarding this Privacy Policy or the Apps, contact:</p>
+
+        <p><span class="email-box">mikewm2015@icloud.com</span></p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Mike Murphy Apps. All Rights Reserved.</p>
+      <div class="socials">
+        <a class="social-link" href="./index.html">← All Apps</a>
+        <a class="social-link" href="mailto:mikewm2015@icloud.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
