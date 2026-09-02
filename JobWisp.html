@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobWisp — Mike Murphy Apps</title>
+  <meta
+    name="description"
+    content="JobWisp: an on-device AI job application assistant. Tailor your resume, write cover letters, and track every application — privately, with no subscription."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: rgba(255,255,255,0.06);
+      --surface-border: rgba(255,255,255,0.1);
+      --primary: #7b8aff;
+      --primary-strong: #6270e8;
+      --confirm: #4abe8b;
+      --text: #f5f7ff;
+      --muted: #b4bdd3;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 24px;
+      --max-width: 1100px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(123,138,255,0.22), transparent 35%),
+        radial-gradient(circle at top right, rgba(74,190,139,0.14), transparent 30%),
+        linear-gradient(180deg, #0b1020 0%, #10182e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { width: min(92%, var(--max-width)); margin: 0 auto; }
+
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e2340, var(--primary));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 10px 25px rgba(123,138,255,0.35);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover { color: white; }
+
+    .hero { padding: 90px 0 60px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--confirm);
+      box-shadow: 0 0 12px var(--confirm);
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: 780px;
+      margin-bottom: 22px;
+    }
+
+    .hero p.lede {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 620px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 16px;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      box-shadow: 0 12px 24px rgba(123,138,255,0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .stat {
+      padding: 24px 26px;
+      border-radius: var(--radius);
+    }
+
+    .stat .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .stat .label { color: var(--muted); font-size: 0.92rem; }
+
+    section { padding: 70px 0; }
+
+    .section-title { margin-bottom: 44px; }
+
+    .section-title h2 {
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .section-title p { color: var(--muted); max-width: 620px; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      padding: 28px;
+      border-radius: 22px;
+    }
+
+    .feature-card .mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      margin-bottom: 18px;
+    }
+
+    .mark.signal { background: rgba(123,138,255,0.16); color: var(--primary); }
+    .mark.confirm { background: rgba(74,190,139,0.16); color: var(--confirm); }
+
+    .feature-card h3 { font-size: 1.08rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .feature-card p { color: var(--muted); font-size: 0.95rem; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+    }
+
+    .step {
+      padding: 26px;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .step .step-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
+
+    .step h3 { font-size: 1.02rem; margin-bottom: 8px; }
+    .step p { color: var(--muted); font-size: 0.92rem; }
+
+    .pricing-card {
+      padding: clamp(28px, 5vw, 48px);
+      border-radius: 28px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .pricing-card .price {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .pricing-card .price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .pricing-card .trial-note { color: var(--muted); margin-bottom: 22px; }
+
+    .check-list { list-style: none; }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.96rem;
+      margin-bottom: 14px;
+    }
+
+    .check-list li .check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(74,190,139,0.16);
+      color: var(--confirm);
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    footer {
+      padding: 50px 0 70px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.2s ease;
+      display: inline-block;
+    }
+
+    .social-link:hover { background: rgba(255,255,255,0.1); }
+
+    @media (max-width: 760px) {
+      .pricing-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <span>Mike Murphy Apps</span>
+      </div>
+      <a href="./index.html" class="back-link">
+        <span>←</span> All Apps
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          On-device AI · Apple Intelligence · iPhone &amp; iPad
+        </div>
+
+        <h1>Tailor your resume to every job, without losing an evening to it.</h1>
+
+        <p class="lede">
+          JobWisp reads a job posting, matches it against your real experience, and helps you tailor your resume and write a cover letter — all on your device. Nothing about your career history ever leaves your phone.
+        </p>
+
+        <div class="hero-actions">
+          <span class="btn btn-secondary">Coming soon to the App Store</span>
+          <a href="./privacy.html" class="btn btn-secondary">Privacy Policy</a>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat glass">
+            <div class="num">100%</div>
+            <div class="label">On-device — no servers, no cloud AI</div>
+          </div>
+          <div class="stat glass">
+            <div class="num">$4.99</div>
+            <div class="label">One-time unlock, no subscription</div>
+          </div>
+          <div class="stat glass">
+            <div class="num">7 days</div>
+            <div class="label">Free trial of every AI feature</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Everything a job search actually needs</h2>
+          <p>One app for the whole loop — from a saved posting to a sent application.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card glass">
+            <div class="mark signal">↑</div>
+            <h3>Resume import</h3>
+            <p>Bring in an existing resume as a PDF or Word doc — including scanned or table-layout resumes — and JobWisp parses it into an editable profile.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="mark signal">✎</div>
+            <h3>AI resume tailoring</h3>
+            <p>JobWisp compares your experience against a posting and suggests reworded, reordered bullets — grounded in what you actually did, never invented.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="mark confirm">✉</div>
+            <h3>AI cover letters</h3>
+            <p>Generate a cover letter that references your real background and the role's real requirements, editable before you send it anywhere.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="mark confirm">☰</div>
+            <h3>Application tracking</h3>
+            <p>Every posting, status, and note lives in one place — free forever, with no trial or purchase required.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="mark signal">⌂</div>
+            <h3>Fully private by design</h3>
+            <p>Resume tailoring and cover letters run through Apple's on-device Foundation Models framework. Your data is never uploaded anywhere.</p>
+          </div>
+
+          <div class="feature-card glass">
+            <div class="mark confirm">↥</div>
+            <h3>Built for iPhone and iPad</h3>
+            <p>A side-by-side layout on iPad makes reviewing applications and tailored resumes together easy, not just possible.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="container">
+        <div class="section-title">
+          <h2>How it works</h2>
+          <p>Four steps, start to finish.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step glass">
+            <div class="step-num">01</div>
+            <h3>Import your resume</h3>
+            <p>Upload what you already have, or build a profile from scratch.</p>
+          </div>
+          <div class="step glass">
+            <div class="step-num">02</div>
+            <h3>Paste a job posting</h3>
+            <p>Drop in the text of any listing you're considering.</p>
+          </div>
+          <div class="step glass">
+            <div class="step-num">03</div>
+            <h3>Review AI suggestions</h3>
+            <p>Tailored bullets and a draft cover letter, ready to edit.</p>
+          </div>
+          <div class="step glass">
+            <div class="step-num">04</div>
+            <h3>Track the application</h3>
+            <p>Log the status and keep every version on hand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <div class="section-title">
+          <h2>Simple, one-time pricing</h2>
+          <p>No subscription, no recurring charge, no surprise renewal.</p>
+        </div>
+
+        <div class="pricing-card glass">
+          <div>
+            <div class="price">$4.99 <span>one-time</span></div>
+            <p class="trial-note">Try every AI feature free for 7 days. Unlock once, use forever — application tracking stays free even if you never buy.</p>
+            <span class="btn btn-secondary">Coming soon to the App Store</span>
+          </div>
+
+          <ul class="check-list">
+            <li><span class="check">✓</span> Unlimited application tracking, always free</li>
+            <li><span class="check">✓</span> AI resume tailoring, unlocked after trial or purchase</li>
+            <li><span class="check">✓</span> AI cover letter generation, unlocked after trial or purchase</li>
+            <li><span class="check">✓</span> No account, no login, no data collection</li>
+            <li><span class="check">✓</span> One purchase, no ongoing fees ever</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container">
+      <p>© 2026 Mike Murphy Apps. All Rights Reserved.</p>
+      <div class="socials">
+        <a class="social-link" href="./index.html">← All Apps</a>
+        <a class="social-link" href="./privacy.html">Privacy Policy</a>
+        <a class="social-link" href="mailto:mikewm2015@icloud.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
